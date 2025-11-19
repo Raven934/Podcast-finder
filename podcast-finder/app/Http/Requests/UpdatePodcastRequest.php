@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PodcastRequest extends FormRequest
+class UpdatePodcastRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,11 @@ class PodcastRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255|unique:podcasts,title',
-            'description' => 'required|string|max:5000|min:10',
-            'image' => 'nullable|file|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
-            'genre' => 'required|string|max:100',
+            'title' => 'sometimes|required|string|max:255',
+            'description' => 'nullable|string|max:5000',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120', // 5MB max
+            'genre' => 'nullable|string|max:100'
+            
         ];
     }
 
@@ -37,17 +38,14 @@ class PodcastRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'title.required' => 'The podcast title is required.',
-            'title.unique' => 'A podcast with this title already exists.',
+            'title.required' => 'The podcast title is required when provided.',
             'title.max' => 'The podcast title must not exceed 255 characters.',
-            'description.required' => 'The podcast description is required.',
-            'description.min' => 'The podcast description must be at least 10 characters.',
             'description.max' => 'The podcast description must not exceed 5000 characters.',
             'image.image' => 'The uploaded file must be an image.',
             'image.mimes' => 'The image must be of type: jpeg, png, jpg, gif, or webp.',
             'image.max' => 'The image size must not exceed 5MB.',
-            'genre.required' => 'The podcast genre is required.',
             'genre.max' => 'The genre must not exceed 100 characters.'
         ];
     }
+
 }
